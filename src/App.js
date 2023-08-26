@@ -3,9 +3,10 @@ import './App.css';
 import {Header} from './Components/Header/Header'
 import axios from 'axios';
 import { MovieScreen } from './Components/MovieScreen/MovieScreen';
+import { WatchList } from './Components/WatchList/WatchList';
 
 
-function App() {
+function App({}) {
 const [movie, setMovie] = useState([]);
 const [watchList, setWatchList] = useState([]);
 const [page, setPage] = useState(1);
@@ -21,15 +22,32 @@ const getData = () => {
     getData();
   }, [page]);
 
+  let addMovie = (movie) => {
+    setWatchList([...watchList, movie]);
+  }
+
+  let removeMovie = (movie) => {
+    let newState = watchList.filter((mov) => {
+      return mov !== movie;
+    });
+    setWatchList(newState);
+  };
+
   return (
     <div className="App">
         <Header />
-        <main>
+        <main className='row'>
           <MovieScreen 
-            list={watchList}
+            movie={movie}
             page={page}
             setPage={setPage}
-            movieList={movie}/>
+            watchList={watchList}
+            addMovie={addMovie}
+            removemovie={removeMovie}
+            />
+          <WatchList watchList={watchList}
+          removemovie={removeMovie}
+          />
         </main>
     </div>
   );
